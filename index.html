@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>珊珊 · 像风一样 ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        font-family: "微软雅黑", sans-serif;
+        background: linear-gradient(135deg, #dfe9f3, #ffffff);
+        color: #333;
+        text-align: center;
+    }
+
+    /* 漂浮光点像风 */
+    .wind {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .wind span {
+        position: absolute;
+        display: block;
+        width: 6px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: float 8s linear infinite;
+    }
+
+    @keyframes float {
+        from {
+            transform: translateY(100vh) translateX(0vw);
+            opacity: 0.5;
+        }
+        to {
+            transform: translateY(-10vh) translateX(20vw);
+            opacity: 0;
+        }
+    }
+
+    .container {
+        margin-top: 40px;
+    }
+
+    h1 {
+        font-size: 38px;
+        margin-bottom: 10px;
+    }
+
+    .photo-box {
+        width: 260px;
+        height: 340px;
+        margin: 20px auto;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .photo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    p {
+        font-size: 20px;
+        width: 85%;
+        margin: 20px auto;
+        line-height: 1.8;
+        color: #444;
+    }
+
+    button {
+        padding: 12px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 25px;
+        background: #82b3ff;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #5d95ff;
+        transform: scale(1.05);
+    }
+</style>
+</head>
+<body>
+
+<div class="wind">
+    <script>
+        for(let i = 0; i < 50; i++){
+            let s = document.createElement("span");
+            s.style.left = Math.random() * 100 + "vw";
+            s.style.animationDelay = Math.random() * 5 + "s";
+            s.style.animationDuration = 6 + Math.random() * 4 + "s";
+            document.body.querySelector(".wind").appendChild(s);
+        }
+    </script>
+</div>
+
+<div class="container">
+    <h1>珊珊 · 像风一样</h1>
+
+    <div class="photo-box">
+        <img src="shanshan.jpg" alt="珊珊">
+    </div>
+
+    <p>
+        珊珊，  
+        你像风一样，温柔、轻盈，却能吹乱我的心。  
+        你的笑，是我见过最温暖的风景。  
+        薛之谦的歌很好听，但我更想让你知道——  
+        <br><br>
+        <b>遇见你，是我人生中最美的一阵风。</b>
+    </p>
+
+    <button onclick="toggleMusic()">🎵 播放 / 暂停《像风一样》</button>
+
+    <audio id="music" src="xiangfeng.mp3" loop></audio>
+</div>
+
+<script>
+    let music = document.getElementById("music");
+
+    document.addEventListener("click", function(){
+        music.play();
+    }, { once: true });
+
+    function toggleMusic() {
+        if(music.paused){
+            music.play();
+        } else {
+            music.pause();
+        }
+    }
+</script>
+
+</body>
+</html>
