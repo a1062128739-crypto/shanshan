@@ -1,48 +1,85 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>珊珊 · 像风一样 ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>像风一样 · 送给珊珊</title>
 
 <style>
     * { box-sizing: border-box; }
     body {
         margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "微软雅黑", sans-serif;
+        font-family: "微软雅黑", sans-serif;
+        background: #000;
         color: #fff;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #000;
+        overflow: hidden;
     }
 
-    /* 背景模糊：用照片做毛玻璃 */
+    /* 背景毛玻璃 */
     .bg {
         position: fixed;
         inset: 0;
         background: url("shanshan.jpg") center/cover no-repeat;
-        filter: blur(18px);
+        filter: blur(25px);
+        opacity: 0.55;
         transform: scale(1.1);
-        z-index: -2;
+        z-index: -3;
     }
-    .bg-mask {
+    .mask {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.55);
+        background: rgba(0,0,0,0.45);
+        z-index: -2;
+    }
+
+    /* 樱花容器 */
+    .sakura {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
         z-index: -1;
+        overflow: hidden;
+    }
+    .sakura span {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #ffc1e3;
+        border-radius: 12px 4px 12px 4px;
+        opacity: 0.8;
+        animation: fall linear infinite;
+    }
+    @keyframes fall {
+        0%   { transform: translate3d(0,-10vh,0) rotate(0deg);   opacity: 0; }
+        10%  { opacity: 1; }
+        100% { transform: translate3d(20px,110vh,0) rotate(360deg); opacity: 0; }
+    }
+
+    .wrapper {
+        width: 100%;
+        max-width: 440px;
+        max-height: 100vh;
+        padding: 14px;
     }
 
     .card {
         width: 100%;
-        max-width: 420px;
-        background: rgba(20, 20, 20, 0.88);
+        background: rgba(25,25,25,0.88);
         border-radius: 20px;
-        padding: 20px 18px 90px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        padding: 18px 18px 130px;
+        box-shadow: 0 24px 45px rgba(0,0,0,0.55);
         position: relative;
         overflow: hidden;
+        animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(25px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     .cover {
@@ -56,136 +93,168 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        display: block;
     }
 
-    .info {
+    .title {
         margin-top: 14px;
-        text-align: left;
-    }
-    .song-name {
         font-size: 22px;
         font-weight: 700;
     }
     .artist {
-        font-size: 14px;
         opacity: 0.8;
-        margin-top: 4px;
+        font-size: 14px;
+        margin-top: 3px;
     }
 
-    /* 播放控制区域 */
+    .countdown {
+        margin-top: 6px;
+        font-size: 12px;
+        opacity: 0.9;
+        color: #ffd7ec;
+    }
+
     .controls {
         margin-top: 18px;
     }
+
     .time-row {
         display: flex;
         justify-content: space-between;
-        font-size: 11px;
-        opacity: 0.8;
+        opacity: 0.7;
+        font-size: 12px;
         margin-bottom: 4px;
     }
-    .progress {
+
+    #progress {
         width: 100%;
         -webkit-appearance: none;
-        appearance: none;
         height: 4px;
         border-radius: 999px;
         background: #444;
         outline: none;
     }
-    .progress::-webkit-slider-thumb {
+    #progress::-webkit-slider-thumb {
         -webkit-appearance: none;
-        appearance: none;
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
+        width: 14px; height: 14px;
         background: #ec4141;
+        border-radius: 50%;
         border: 2px solid #fff;
         margin-top: -5px;
     }
-    .progress::-moz-range-thumb {
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        background: #ec4141;
-        border: 2px solid #fff;
-    }
 
-    .control-buttons {
-        margin-top: 10px;
+    .btn-row {
+        margin-top: 12px;
         display: flex;
-        align-items: center;
         justify-content: center;
-        gap: 30px;
+        gap: 28px;
+        align-items: center;
     }
     .btn {
-        width: 42px;
-        height: 42px;
+        font-size: 24px;
+        width: 48px; height: 48px;
         border-radius: 50%;
-        border: none;
         background: transparent;
+        border: none;
         color: #fff;
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        cursor: pointer;
     }
     .btn-main {
-        width: 56px;
-        height: 56px;
         background: #ec4141;
-        box-shadow: 0 0 18px rgba(236, 65, 65, 0.85);
-        font-size: 24px;
+        width: 60px; height: 60px;
+        box-shadow: 0 0 15px rgba(236,65,65,0.9);
+        font-size: 26px;
     }
 
-    /* 歌词区域 */
-    .lyrics-box {
+    .lyrics {
         margin-top: 18px;
-        background: rgba(255,255,255,0.04);
-        border-radius: 12px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 14px;
         padding: 10px;
-        max-height: 170px;
+        max-height: 150px;
         overflow-y: auto;
         font-size: 13px;
     }
-    .lyrics-box p {
-        margin: 3px 0;
-        opacity: 0.6;
-        transition: all 0.25s;
+    .lyrics p {
+        opacity: 0.55;
+        margin: 4px 0;
+        transition: 0.25s;
     }
-    .lyrics-box p.active {
+    .lyrics p.active {
         opacity: 1;
-        color: #ff4b91;
+        color: #ff88aa;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 15px;
     }
 
-    /* 情话 */
-    .love-note {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 12px;
-        padding: 0 18px;
+    /* 评论区 */
+    .comments {
+        margin-top: 12px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 14px;
+        padding: 10px 10px 12px;
+        max-height: 150px;
+        overflow-y: auto;
         font-size: 13px;
-        line-height: 1.6;
-        opacity: 0.9;
-        color: #ffdfe9;
-        text-align: left;
     }
-    .love-note span {
-        color: #ff8aa2;
-        font-weight: 600;
+    .comments-title {
+        font-size: 13px;
+        opacity: 0.9;
+        margin-bottom: 6px;
+    }
+    .comment {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+    .avatar {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #ec4141;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
+    .c-main {
+        flex: 1;
+    }
+    .c-name {
+        font-size: 13px;
+        opacity: .9;
+    }
+    .c-meta {
+        font-size: 11px;
+        opacity: .6;
+        margin-bottom: 2px;
+    }
+    .c-text {
+        font-size: 13px;
+        opacity: .9;
+    }
+
+    .love {
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        bottom: 16px;
+        font-size: 13px;
+        line-height: 1.7;
+        color: #ffe6f2;
+        opacity: 0;
+        animation: loveAppear 2s ease 1.4s forwards;
+    }
+    @keyframes loveAppear {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 480px) {
+        .wrapper { padding: 0; }
         .card {
             border-radius: 0;
             max-width: 100%;
-            min-height: 100vh;
-        }
-        .love-note {
-            bottom: 18px;
+            max-height: 100vh;
         }
     }
 </style>
@@ -193,17 +262,192 @@
 <body>
 
 <div class="bg"></div>
-<div class="bg-mask"></div>
+<div class="mask"></div>
+<div class="sakura" id="sakura"></div>
 
-<div class="card">
-    <div class="cover">
-        <img src="shanshan.jpg" alt="珊珊">
-    </div>
+<div class="wrapper">
+  <div class="card">
+      <div class="cover">
+          <img src="shanshan.jpg" alt="珊珊">
+      </div>
 
-    <div class="info">
-        <div class="song-name">像风一样</div>
-        <div class="artist">薛之谦 · 只唱给珊珊听</div>
-    </div>
+      <div class="title">像风一样</div>
+      <div class="artist">薛之谦 · 只唱给珊珊的歌</div>
+      <div class="countdown" id="countdown">距离 12 月 13 日「风起的那一天」还有 … 天</div>
 
-    <div class="controls">
-        <audio id="audio" src="xiangfe
+      <div class="controls">
+          <audio id="audio" src="xiangfengyiyang.mp3"></audio>
+
+          <div class="time-row">
+              <span id="current-time">00:00</span>
+              <span id="total-time">00:00</span>
+          </div>
+
+          <input type="range" id="progress" min="0" max="100" value="0">
+
+          <div class="btn-row">
+              <button class="btn" id="back">⏪</button>
+              <button class="btn btn-main" id="play">▶</button>
+              <button class="btn" id="forward">⏩</button>
+          </div>
+      </div>
+
+      <div class="lyrics" id="lyrics">歌词加载中…</div>
+
+      <div class="comments" id="comments">
+          <div class="comments-title">热评墙 · 只对珊珊可见</div>
+
+          <div class="comment">
+              <div class="avatar">风</div>
+              <div class="c-main">
+                  <div class="c-name">张川浩 · 热评第 1 条</div>
+                  <div class="c-meta">来自「风起的那一天」 · 12.13</div>
+                  <div class="c-text">你就像风一样席卷我整个青春。</div>
+              </div>
+          </div>
+
+          <!-- 你以后也可以在这里继续加更多“假装网友”的评论 -->
+      </div>
+
+      <div class="love">
+          珊珊，<br>
+          你像一阵不按常理吹来的风，路过我的所有普通日子，  
+          把它们都吹成了值得纪念的瞬间。<br>
+          从 12 月 13 日开始，我的世界正式多了一个方向——那就是，你。
+      </div>
+  </div>
+</div>
+
+<script>
+// 樱花飘落（小碎樱花 · 风格 A）
+const sakuraContainer = document.getElementById('sakura');
+for (let i = 0; i < 40; i++) {
+    const s = document.createElement('span');
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.animationDuration = 6 + Math.random() * 6 + 's';
+    s.style.animationDelay = Math.random() * 8 + 's';
+    sakuraContainer.appendChild(s);
+}
+
+// 播放器逻辑
+const audio = document.getElementById("audio");
+const progress = document.getElementById("progress");
+const playBtn = document.getElementById("play");
+const backBtn = document.getElementById("back");
+const forwardBtn = document.getElementById("forward");
+const currentEl = document.getElementById("current-time");
+const totalEl = document.getElementById("total-time");
+const lyricsBox = document.getElementById("lyrics");
+const countdownEl = document.getElementById("countdown");
+
+let dragging = false;
+let lrc = [];
+
+// 时间格式化
+function fmt(t){
+    t = Math.floor(t || 0);
+    return String(Math.floor(t/60)).padStart(2,"0") + ":" + String(t%60).padStart(2,"0");
+}
+
+// 纪念日倒计时：每年 12 月 13 日
+function updateCountdown() {
+    const now = new Date();
+    let year = now.getFullYear();
+    const target = new Date(year, 11, 13); // 月份从 0 开始，11 = 12 月
+    if (target < now) {
+        year += 1;
+    }
+    const next = new Date(year, 11, 13);
+    const diff = next - now;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    countdownEl.textContent = `距离 12 月 13 日「风起的那一天」还有 ${days} 天`;
+}
+updateCountdown();
+setInterval(updateCountdown, 60 * 60 * 1000);
+
+// 音频元数据
+audio.addEventListener("loadedmetadata", () => {
+    totalEl.textContent = fmt(audio.duration);
+});
+
+// 播放 / 暂停
+playBtn.onclick = () => {
+    if(audio.paused){
+        audio.play();
+        playBtn.textContent = "⏸";
+    } else {
+        audio.pause();
+        playBtn.textContent = "▶";
+    }
+};
+
+backBtn.onclick    = () => audio.currentTime = Math.max(0, audio.currentTime - 10);
+forwardBtn.onclick = () => audio.currentTime = Math.min(audio.duration || audio.currentTime + 10, audio.currentTime + 10);
+
+// 播放进度
+audio.ontimeupdate = () => {
+    if(!dragging && audio.duration){
+        progress.value = (audio.currentTime / audio.duration) * 100;
+        currentEl.textContent = fmt(audio.currentTime);
+        updateLyrics(audio.currentTime);
+    }
+};
+
+progress.oninput = () => dragging = true;
+progress.onchange = () => {
+    if(audio.duration){
+        audio.currentTime = audio.duration * (progress.value / 100);
+    }
+    dragging = false;
+};
+
+// 激活音频权限（手机浏览器）
+document.addEventListener("click", function once(){
+    audio.play().then(()=>{ audio.pause(); }).catch(()=>{});
+    document.removeEventListener("click", once);
+}, { once: true });
+
+// 加载 LRC 歌词
+fetch("xiangfeng.lrc")
+.then(r => r.text())
+.then(text => {
+    lyricsBox.innerHTML = "";
+    lrc = [];
+    text.split(/\r?\n/).forEach(line => {
+        const m = line.match(/\[(\d+):(\d+\.\d+)\](.*)/);
+        if(m){
+            const t = parseInt(m[1]) * 60 + parseFloat(m[2]);
+            const c = m[3].trim();
+            lrc.push({t,c});
+        }
+    });
+    lrc.forEach(item => {
+        const p = document.createElement("p");
+        p.textContent = item.c;
+        lyricsBox.appendChild(p);
+    });
+})
+.catch(() => {
+    lyricsBox.textContent = "歌词加载失败…";
+});
+
+// 高亮歌词
+function updateLyrics(time){
+    const ps = lyricsBox.getElementsByTagName("p");
+    if(!lrc.length || !ps.length) return;
+
+    for(let i=0;i<lrc.length;i++){
+        const cur = lrc[i];
+        const next = lrc[i+1];
+        if(time >= cur.t && (!next || time < next.t)){
+            for(let j=0;j<ps.length;j++) ps[j].classList.remove("active");
+            ps[i].classList.add("active");
+            ps[i].scrollIntoView({behavior:"smooth", block:"center"});
+            break;
+        }
+    }
+}
+</script>
+
+</body>
+</html>
