@@ -1,136 +1,209 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>珊珊的《像风一样》</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>珊珊 · 像风一样 ❤️</title>
 
 <style>
-body {
-    margin: 0;
-    background: #f0f4ff;
-    font-family: "微软雅黑";
-    text-align: center;
-    padding-bottom: 120px;
-}
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "微软雅黑", sans-serif;
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+    }
 
-#photo {
-    width: 250px;
-    height: 330px;
-    border-radius: 14px;
-    margin-top: 20px;
-    object-fit: cover;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-}
+    /* 背景模糊：用照片做毛玻璃 */
+    .bg {
+        position: fixed;
+        inset: 0;
+        background: url("shanshan.jpg") center/cover no-repeat;
+        filter: blur(18px);
+        transform: scale(1.1);
+        z-index: -2;
+    }
+    .bg-mask {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: -1;
+    }
 
-#title {
-    font-size: 24px;
-    margin-top: 15px;
-    font-weight: bold;
-}
+    .card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(20, 20, 20, 0.88);
+        border-radius: 20px;
+        padding: 20px 18px 90px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        position: relative;
+        overflow: hidden;
+    }
 
-#player-box {
-    width: 85%;
-    margin: 20px auto;
-    text-align: center;
-}
+    .cover {
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 26px rgba(0,0,0,0.6);
+    }
+    .cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
 
-#progress {
-    width: 90%;
-}
+    .info {
+        margin-top: 14px;
+        text-align: left;
+    }
+    .song-name {
+        font-size: 22px;
+        font-weight: 700;
+    }
+    .artist {
+        font-size: 14px;
+        opacity: 0.8;
+        margin-top: 4px;
+    }
 
-#lyrics {
-    width: 90%;
-    margin: 20px auto;
-    text-align: left;
-    background: rgba(255,255,255,0.6);
-    padding: 15px;
-    border-radius: 12px;
-    height: 200px;
-    overflow-y: auto;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+    /* 播放控制区域 */
+    .controls {
+        margin-top: 18px;
+    }
+    .time-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        opacity: 0.8;
+        margin-bottom: 4px;
+    }
+    .progress {
+        width: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 4px;
+        border-radius: 999px;
+        background: #444;
+        outline: none;
+    }
+    .progress::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #ec4141;
+        border: 2px solid #fff;
+        margin-top: -5px;
+    }
+    .progress::-moz-range-thumb {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #ec4141;
+        border: 2px solid #fff;
+    }
 
-.highlight {
-    color: #ff4b91;
-    font-weight: bold;
-}
+    .control-buttons {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+    }
+    .btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: #fff;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-main {
+        width: 56px;
+        height: 56px;
+        background: #ec4141;
+        box-shadow: 0 0 18px rgba(236, 65, 65, 0.85);
+        font-size: 24px;
+    }
+
+    /* 歌词区域 */
+    .lyrics-box {
+        margin-top: 18px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 12px;
+        padding: 10px;
+        max-height: 170px;
+        overflow-y: auto;
+        font-size: 13px;
+    }
+    .lyrics-box p {
+        margin: 3px 0;
+        opacity: 0.6;
+        transition: all 0.25s;
+    }
+    .lyrics-box p.active {
+        opacity: 1;
+        color: #ff4b91;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    /* 情话 */
+    .love-note {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 12px;
+        padding: 0 18px;
+        font-size: 13px;
+        line-height: 1.6;
+        opacity: 0.9;
+        color: #ffdfe9;
+        text-align: left;
+    }
+    .love-note span {
+        color: #ff8aa2;
+        font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+        .card {
+            border-radius: 0;
+            max-width: 100%;
+            min-height: 100vh;
+        }
+        .love-note {
+            bottom: 18px;
+        }
+    }
 </style>
 </head>
 <body>
 
-<img id="photo" src="shanshan.jpg">
+<div class="bg"></div>
+<div class="bg-mask"></div>
 
-<div id="title">薛之谦《像风一样》送给珊珊 ❤️</div>
+<div class="card">
+    <div class="cover">
+        <img src="shanshan.jpg" alt="珊珊">
+    </div>
 
-<div id="player-box">
-    <audio id="audio" src="xiangfengyiyang.png"></audio>
+    <div class="info">
+        <div class="song-name">像风一样</div>
+        <div class="artist">薛之谦 · 只唱给珊珊听</div>
+    </div>
 
-    <button onclick="togglePlay()">播放 / 暂停</button>
-    <br><br>
-
-    <input type="range" id="progress" value="0" min="0" max="100">
-</div>
-
-<div id="lyrics">歌词加载中...</div>
-
-<script>
-// 播放暂停控制
-let audio = document.getElementById("audio");
-let progress = document.getElementById("progress");
-let lyricsBox = document.getElementById("lyrics");
-let lrcData = [];
-
-function togglePlay() {
-    if (audio.paused) audio.play();
-    else audio.pause();
-}
-
-// 进度条更新
-audio.addEventListener("timeupdate", () => {
-    progress.value = (audio.currentTime / audio.duration) * 100;
-    updateLyrics(audio.currentTime);
-});
-
-// 拖动进度条
-progress.addEventListener("input", () => {
-    audio.currentTime = audio.duration * (progress.value / 100);
-});
-
-// 加载 LRC 歌词
-fetch("xiangfeng.lrc")
-    .then(res => res.text())
-    .then(text => {
-        lyricsBox.innerHTML = "";
-        let lines = text.split("\n");
-        lines.forEach(line => {
-            let match = line.match(/\[(\d+):(\d+\.\d+)\](.*)/);
-            if (match) {
-                let time = parseInt(match[1]) * 60 + parseFloat(match[2]);
-                let content = match[3];
-                lrcData.push({ time, content });
-            }
-        });
-        lrcData.forEach(item => {
-            let p = document.createElement("p");
-            p.textContent = item.content;
-            lyricsBox.appendChild(p);
-        });
-    });
-
-// 高亮歌词
-function updateLyrics(t) {
-    let ps = lyricsBox.getElementsByTagName("p");
-    for (let i = 0; i < lrcData.length; i++) {
-        if (t >= lrcData[i].time && (!lrcData[i+1] || t < lrcData[i+1].time)) {
-            for (let j = 0; j < ps.length; j++) ps[j].classList.remove("highlight");
-            ps[i].classList.add("highlight");
-            ps[i].scrollIntoView({ behavior: "smooth", block: "center" });
-            break;
-        }
-    }
-}
-</script>
-
-</body>
-</html>
+    <div class="controls">
+        <audio id="audio" src="xiangfe
