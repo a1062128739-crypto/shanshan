@@ -276,7 +276,7 @@
       <div class="countdown" id="countdown">距离 12 月 13 日「风起的那一天」还有 … 天</div>
 
       <div class="controls">
-          <audio id="audio" src="https://github.com/a1062128739-crypto/shanshan/blob/main/xiangfengyiyang.mp3"></audio>
+          <audio id="audio" src="xiangfengyiyang.mp3"></audio>
 
           <div class="time-row">
               <span id="current-time">00:00</span>
@@ -381,8 +381,14 @@ playBtn.onclick = () => {
     }
 };
 
-backBtn.onclick    = () => audio.currentTime = Math.max(0, audio.currentTime - 10);
-forwardBtn.onclick = () => audio.currentTime = Math.min(audio.duration || audio.currentTime + 10, audio.currentTime + 10);
+backBtn.onclick = () => {
+    audio.currentTime = Math.max(0, audio.currentTime - 10);
+};
+forwardBtn.onclick = () => {
+   if (!isNaN(audio.duration)) {
+        audio.currentTime = Math.min(audio.currentTime + 10, audio.duration - 0.5);
+    }
+};
 
 // 播放进度
 audio.ontimeupdate = () => {
@@ -451,4 +457,5 @@ function updateLyrics(time){
 
 </body>
 </html>
+
 
